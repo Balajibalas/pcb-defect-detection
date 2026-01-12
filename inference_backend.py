@@ -9,11 +9,11 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
 # --------------------- CONFIG ---------------------
-BASE_DIR = os.path.dirname(os.path.absname(__file__))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 MODEL_PATH = os.path.join(BASE_DIR, "best_model.pth")
 CLASS_JSON = os.path.join(BASE_DIR, "class_names.json")
-
-TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")   # auto templates
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 
 IMG_SIZE = 160
 DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -21,6 +21,7 @@ DEVICE = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 CONF_THRESH = 0.80
 AREA_THRESH = 200
 # --------------------------------------------------
+
 
 
 # ---------- Load Classes ----------
@@ -212,6 +213,7 @@ def infer_with_uploaded_template(test_bgr, template_bgr):
     annotated = annotate_image(test_bgr, detections)
 
     return annotated, detections, mask
+
 
 
 
