@@ -213,3 +213,4 @@ def infer_with_uploaded_template(test_bgr, template_bgr):
 
     return annotated, detections, mask
 
+
