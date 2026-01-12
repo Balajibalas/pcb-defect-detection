@@ -38,7 +38,7 @@ _classes = None
 
 def create_model(num_classes):
     return timm.create_model(
-        "tf_efficientnet_b7_ns",
+        "tf_efficientnet_b1_ns",
         pretrained=False,
         num_classes=num_classes
     )
@@ -212,4 +212,3 @@ def infer_with_uploaded_template(test_bgr, template_bgr):
     annotated = annotate_image(test_bgr, detections)
 
     return annotated, detections, mask
-

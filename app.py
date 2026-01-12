@@ -1,6 +1,10 @@
 import streamlit as st
 import numpy as np
 import cv2
+import pandas as pd
+from PIL import Image
+import io
+
 from inference_backend import (
     infer_pcb_from_array,
     infer_with_uploaded_template
@@ -121,11 +125,25 @@ if uploaded_test:
     st.subheader("🖼 Annotated PCB Output")
     st.image(
         cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB),
-        use_container_width=True
+        width=1000
     )
+    annotated_rgb = cv2.cvtColor(annotated, cv2.COLOR_BGR2RGB)
+    pil_img = Image.fromarray(annotated_rgb)
+
+    buf = io.BytesIO()
+    pil_img.save(buf, format="PNG")
+    byte_im = buf.getvalue()
+
+    st.download_button(
+    label="⬇ Download Annotated Image",
+    data=byte_im,
+    file_name="pcb_annotated_result.png",
+    mime="image/png"
+    )   
+    
 
     st.subheader("🧪 Difference Mask")
-    st.image(mask, clamp=True, use_container_width=True)
+    st.image(mask, clamp=True, width=1000)
 
     st.subheader("📌 Detected Defects")
 
@@ -136,6 +154,15 @@ if uploaded_test:
             st.markdown(
                 f"- **{d['label']}** — Confidence: `{d['conf']:.2f}`"
             )
+        df = pd.DataFrame(detections)
+        csv = df.to_csv(index=False)
+
+        st.download_button(
+        label="⬇ Download Defect Report (CSV)",
+        data=csv,
+        file_name="pcb_defect_report.csv",
+        mime="text/csv"
+        )
 
 else:
     st.info("⬆ Upload a FULL PCB image to start detection.")
