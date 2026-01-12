@@ -9,7 +9,7 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 
 # --------------------- CONFIG ---------------------
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_DIR = os.path.dirname(os.path.absname(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "best_model.pth")
 CLASS_JSON = os.path.join(BASE_DIR, "class_names.json")
 
@@ -212,6 +212,7 @@ def infer_with_uploaded_template(test_bgr, template_bgr):
     annotated = annotate_image(test_bgr, detections)
 
     return annotated, detections, mask
+
 
 
 
